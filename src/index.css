@@ -1,0 +1,49 @@
+@import "./appColors.css";
+
+html,
+body,
+#root {
+  margin: 0;
+  /* padding: 0.5rem; */
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  font-family: sans-serif;
+  background-color: var(--appBackground);
+  box-sizing: border-box;
+}
+
+@media (max-width:400px) {
+  body {
+    display: none;
+  }
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+p,
+textarea,
+select {
+  font: inherit;
+  cursor: pointer;
+}
+
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
