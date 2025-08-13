@@ -18,15 +18,15 @@ function RoomPanel({ closeMenu }: { closeMenu: () => void }) {
       <RoomCard icon={<IoGameController className="icon" />} name={roomList[1]} active={roomName === roomList[1] ? true : false} press={() => {
         sendMessage(type_name, undefined, roomList[1])
         closeMenu()
-      }} rcount={rcount?.Game} />
+      }} rcount={rcount === null? 0 : rcount?.Game} />
       <RoomCard icon={<FiCast className="icon" />} name={roomList[0]} active={roomName === roomList[0] ? true : false} press={() => {
         sendMessage(type_name, undefined, roomList[0])
         closeMenu()
-      }} rcount={rcount?.common} />
+      }} rcount={rcount === null? 0 : rcount?.common} />
       <RoomCard icon={<TbCricket className="icon" />} name={roomList[2]} active={roomName === roomList[2]} press={() => {
         sendMessage(type_name, undefined, roomList[2])
         closeMenu()
-      }} rcount={rcount?.Cricket} />
+      }} rcount={rcount === null? 0 : rcount?.Cricket} />
 
     </div>
   )
