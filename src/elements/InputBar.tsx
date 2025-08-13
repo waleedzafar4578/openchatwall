@@ -25,7 +25,7 @@ function InputBar({ doOnClick }: { doOnClick: () => void }) {
       return
     }
     if (smsText.trim()) {
-      sendMessage(smsText);
+      sendMessage("sms",smsText);
       setSmsText("")
       doOnClick()
       setLimter(!limiter)

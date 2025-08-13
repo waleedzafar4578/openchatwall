@@ -7,19 +7,19 @@ function UserList() {
   if (!context) {
     throw new Error("Websocket values not provided!");
   }
-  const { allConnectUser, userName } = context;
+  const { allConnectUser, userName, roomName } = context;
   return (
     <div className="user-container">
       <p style={{
-        color:'#fff'
+        color: '#fff'
       }}>Connected Users</p>
       {allConnectUser != null && (
         <ul>
           {allConnectUser.map((user, index) => (
             <div key={index}>
-              {userName != user && (
+              {userName != user.name && roomName === user.room && (
                 <li className="single-user">
-                  <p>{user}</p>
+                  <p>{user.name}</p>
                 </li>
               )}
             </div>

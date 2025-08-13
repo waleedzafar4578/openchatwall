@@ -6,7 +6,8 @@ import UserProfile from './components/UserProfile';
 import UserLogin from './components/UserLogin';
 import { useContext, useEffect, useState } from 'react';
 import { WebSocketContext, WebSocketProvider } from './context/WsContext';
-
+import RoomPanel from './elements/RoomPanel';
+import { MdMeetingRoom } from "react-icons/md";
 function App() {
   const [notificationText, setNotificationText] = useState<string>("");
   const [notificationFlag, setNotificationFlag] = useState(false);
@@ -26,6 +27,7 @@ function App() {
   }, [log]);
   const [mobileScreen, setMobileScreen] = useState(true);
   const [width, setWidth] = useState("-20");
+  const [roomMenu, setRoomMenu] = useState<boolean>(false);
   const leave = () => {
     setUserLogout()
   }
@@ -40,6 +42,9 @@ function App() {
           <div className="container">
             <div className='leave-button' onClick={leave}>
               <p>🚨</p>
+            </div>
+            <div className='room-button-container' onClick={() => setRoomMenu(!roomMenu)}>
+              <MdMeetingRoom className='room-button' />
             </div>
             {(window.innerWidth < 601 ? true : false) && (mobileScreen) && (
               <div className='left-list-open' onClick={() => {
@@ -77,7 +82,11 @@ function App() {
               <div className="right-container-left">
                 <ChatScreen />
               </div>
-              <div className="right-container-right">
+              <div className="right-container-right" style={{
+                opacity: window.innerWidth < 600 ? roomMenu ? "1" : "0" : "1",
+                pointerEvents:window.innerWidth <600 ? roomMenu ? "auto":"none":"auto" 
+              }}>
+                <RoomPanel closeMenu={() => setRoomMenu(!roomMenu)} />
               </div>
             </div>
           </div>

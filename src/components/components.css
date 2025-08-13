@@ -16,6 +16,8 @@
   display: flex;
   flex-direction: column;
   background-color: var(--messageContainerBackground);
+  box-shadow: 0 0 1px var(--common);
+
 }
 
 .message-container-header {

@@ -1,10 +1,11 @@
 import './elements.css';
-import icon from '../assets/dashbord.jpeg';
+
+import { FaPersonShelter } from "react-icons/fa6";
 
 function DashboardIcon(){
   return(
     <div className="dashboard-icon-container">
-      <img src={icon} />
+      <FaPersonShelter  className='dashboard-icon'/>
     </div>
   );
 }

@@ -25,7 +25,7 @@ function ChatScreen() {
     throw new Error("Websocket Context is not provided!");
   };
 
-  const { messages, userName, ws } = context;
+  const { messages, userName, ws, roomName } = context;
 
   const displayNotification = (title: string | undefined, message: any) => {
     title = title === undefined ? "New message" : title;
@@ -97,14 +97,18 @@ function ChatScreen() {
       </div>
       <div className="chatscreen-container-messages">
         {message.map((sms, index) => (
-          <Message
-            key={index}
-            name={sms?.name === userName ? "You" : sms?.name}
-            align={userName === sms?.name ? "center" : "flex-end"}
-            sms={sms?.sms}
-            time={new Date(sms?.created_at)}
-          />
-
+          <div key={index} style={{
+            width:"100%"
+          }}>
+            {roomName === sms.room && (
+              <Message
+                name={sms?.name === userName ? "You" : sms?.name}
+                align={userName === sms?.name ? "center" : "flex-end"}
+                sms={sms?.sms}
+                time={new Date(sms?.created_at)}
+              />
+            )}
+          </div>
         ))}
         <div ref={messageEndRef}></div>
       </div>

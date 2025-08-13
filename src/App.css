@@ -1,31 +1,5 @@
 @import "./appColors.css";
 
-
-/*
-||----------------------------------||
-    alaises: for commment section
-      width -> w
-      height -> h
-||----------------------------------||
-
-
-                          right container 
-left-conatiner                 |           
-   |           container       |           
-|-----------------------------------------|
-|       |                           |     |
-|       |                           |     |
-|       |                           |     |
-|-------|                           |     |
-|       |                           |     |
-|       |                           |     |
-|       |                           |     |
-|       |                           |     |
-|       |                           |     |
-|-------|___________________________|_____|
-|       |                           |     |
-|_______|_______________________________ _|
- */
 .container {
   display: flex;
   flex-direction: row;
@@ -68,7 +42,6 @@ left-conatiner                 |
   justify-content: center;
   align-content: center;
   height: 20%;
-  background-color: #fff;
   width: 100%;
 }
 
@@ -114,6 +87,8 @@ left-conatiner                 |
   display: flex;
   width: 20%;
   height: 100%;
+  justify-content: center;
+  align-items: center;
 }
 
 .notification {
@@ -140,6 +115,7 @@ left-conatiner                 |
   margin: 1.3%;
   scale: 1;
   transition: 1s;
+  box-shadow: 0 0 2px var(--common);
 }
 
 .leave-button:hover {
@@ -147,10 +123,39 @@ left-conatiner                 |
   transition: 1s;
 }
 
+.room-button-container {
+  display: none;
+}
 
 @media(max-width:600px) {
+  .room-button-container {
+    display: flex;
+    position: absolute;
+    background-color: var(--common);
+    top: 8%;
+    right: 2%;
+    width: 30px;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    box-shadow: 0 0 2px var(--common);
+    z-index: 1000;
+  }
+
+  .room-button {
+    color: #fff;
+    width: 70%;
+    height: 70%;
+  }
+
   .right-container-right {
-    display: none;
+    display: flex;
+    position: absolute;
+    right: 0;
+    height: 70%;
+    width: 30%;
+    transition: 1s;
   }
 
   .close-nav-container {

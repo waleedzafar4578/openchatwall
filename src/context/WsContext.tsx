@@ -2,16 +2,28 @@ import { createContext, useEffect, useState } from "react";
 import { wsUrl } from '../services/chat';
 import type { singleMessage } from "../commons/chatModels";
 
+
+interface ConnectedUser {
+  room: string;
+  name: string;
+}
+interface RCountT{
+  Game:number;
+  common:number;
+  Cricket:number;
+}
 interface WebSocketContextValues {
   ws: WebSocket | null;
-  sendMessage: (message: string) => void;
+  sendMessage: (smsType: string, message?: string, room?: string) => void;
   userName: string | null;
-  allConnectUser: string[] | null;
+  allConnectUser: ConnectedUser[] | null;
   log: string | null;
   setUserLogin: (name: string) => void;
   setUserLogout: () => void;
   messages: singleMessage | null;
   reconnect: () => void;
+  roomName: string;
+  rcount:RCountT | null;
 };
 
 const WebSocketContext = createContext<WebSocketContextValues | null>(null);
@@ -20,10 +32,10 @@ const WebSocketProvider = ({ children }: { children: React.ReactNode }) => {
   const [ws, setWs] = useState<WebSocket | null>(null);
   const [userName, setUserName] = useState<string | null>(null);
   const [log, setLog] = useState<string | null>(null);
-  const [allConnectUser, setAllConnectUser] = useState<string[] | null>(null);
+  const [allConnectUser, setAllConnectUser] = useState<ConnectedUser[] | null>(null);
   const [messages, setMessages] = useState<singleMessage | null>(null);
-
-
+  const [roomName, setRoomName] = useState<string>("common");
+  const [rcount,setRCount]=useState<RCountT|null>(null);
   const fetchUserName = () => {
     const name = localStorage.getItem("userInfo");
     if (name) {
@@ -46,6 +58,7 @@ const WebSocketProvider = ({ children }: { children: React.ReactNode }) => {
       connectWebSocket();
     }
   }
+  
 
 
 
@@ -77,7 +90,7 @@ const WebSocketProvider = ({ children }: { children: React.ReactNode }) => {
       console.log("[Warn] WebSocket Already Connected!");
       return;
     };
-    const socket = new WebSocket(`${wsUrl}/ws/chat?userInfo=${userName}`);
+    const socket = new WebSocket(`${wsUrl}/ws/chat?userInfo=${userName}&&roomName=${roomName}`);
     socket.onopen = () => {
       setWs(socket);
       console.log("[Success] WebSocket is open!");
@@ -90,6 +103,7 @@ const WebSocketProvider = ({ children }: { children: React.ReactNode }) => {
         case "userList":
           console.log("[userList]", recievedData?.data);
           setAllConnectUser(recievedData?.data);
+          setRCount(recievedData?.roomCount)
           break;
         case "messages":
           console.log("[Messages]", recievedData?.data);
@@ -120,7 +134,8 @@ const WebSocketProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
   }, [userName]);
-  const sendMessage = (message: string) => {
+  const sendMessage = (smsType: string, message?: string, room?: string) => {
+
     if (!ws) {
       setLog("[Error] WebSocket is not connect yet!")
       return;
@@ -143,18 +158,35 @@ const WebSocketProvider = ({ children }: { children: React.ReactNode }) => {
       setLog("[Error] UserName is not Set yet!");
       return;
     }
+    let request = null;
+    switch (smsType) {
+      case "sms":
+        request = {
+          "date": getPostgresDateString(),
+          "sms": message,
+          "userInfo": userName,
+          "roomName": roomName,
+          "smsType": smsType,
+        };
+        break;
+      case "room":
+        setRoomName(room === undefined ? "common":room )
+        request = {
+          "userInfo": userName,
+          "room": room,
+          "smsType": smsType
+        }
+        break;
+    }
 
-    let request = {
-      "date": getPostgresDateString(),
-      "sms": message,
-      "userInfo": userName
-    };
-    ws.send(JSON.stringify(request));
+    if (request) {
+      ws.send(JSON.stringify(request));
+    }
   };
 
 
   return (
-    <WebSocketContext.Provider value={{ ws, userName, setUserLogin, messages, log, allConnectUser, sendMessage, setUserLogout, reconnect }}>
+    <WebSocketContext.Provider value={{ ws, userName, setUserLogin, messages, log, allConnectUser, sendMessage, setUserLogout, reconnect, roomName ,rcount }}>
       {children}
     </WebSocketContext.Provider>
   )

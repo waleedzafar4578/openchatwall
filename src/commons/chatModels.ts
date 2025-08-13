@@ -5,6 +5,7 @@ interface singleMessage{
   name:string;
   sms:string;
   created_at:string;
+  room:string;
 }
 
 
